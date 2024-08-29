@@ -2,7 +2,7 @@ import { FiMenu } from "react-icons/fi";
 import { IoSearchSharp } from "react-icons/io5";
 import { BiCalendarEvent } from "react-icons/bi";
 import { FaCirclePlus } from "react-icons/fa6";
-
+import { Link } from "react-router-dom";
 export default function Home() {
   return (
     <>
@@ -14,7 +14,7 @@ export default function Home() {
               <h1 className="text-white text-xl font-semibold">Transactions</h1>
             </div>
             <div className="flex items-center justify-around w-[20vw]">
-              <IoSearchSharp className="text-white text-2xl" />
+              <Link to="/search"><IoSearchSharp className="text-white text-2xl cursor-pointer" /></Link>
               <BiCalendarEvent className="text-white text-2xl" />
             </div>
           </div>
@@ -22,7 +22,7 @@ export default function Home() {
             <li className="text-white  text-xs">TRANSACTIONS</li>
             <li className="text-white  text-xs">TRANSFERS</li>
           </ul>
-          <FaCirclePlus className=" absolute bottom-10 right-4 text-[#fc0377] text-6xl"/>
+          <Link to="/newtransaction"><FaCirclePlus className=" absolute bottom-10 right-4 text-[#fc0377] text-6xl cursor-pointer"/></Link>
         </div>
       </div>
     </>
