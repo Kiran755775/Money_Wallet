@@ -8,7 +8,9 @@ import { useState } from "react";
 import { BiCategory } from "react-icons/bi";
 import { MdNoteAlt, MdFlag } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
+import { IoMdPeople } from "react-icons/io";
 
+// Modal Component
 const Modal = ({ isVisible, onClose, name, path }) => {
   if (!isVisible) return null;
 
@@ -35,9 +37,9 @@ const Modal = ({ isVisible, onClose, name, path }) => {
   );
 };
 
+// Main Component
 export default function Newtransaction() {
   const [focusedInput, setFocusedInput] = useState(null);
-
   const [modalDetails, setModalDetails] = useState({ type: null, path: "" });
 
   const handleItemClick = (type, path) => {
@@ -144,10 +146,32 @@ export default function Newtransaction() {
             />
           </li>
 
+          {/* New List Item for People */}
+          <li
+            className="flex items-center pl-6 pr-1 my-8"
+            onClick={() => handleItemClick("people", "/person")}
+          >
+            <IoMdPeople className="text-2xl" />
+            <input
+              type="text"
+              placeholder="People"
+              className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
+              style={{ caretColor: "#fc0377" }}
+            />
+          </li>
+
           <Modal
             isVisible={modalDetails.type !== null}
             onClose={handleCloseModal}
-            name={modalDetails.type === "events" ? "Events" : "Places"}
+            name={
+              modalDetails.type === "event"
+                ? "Events"
+                : modalDetails.type === "place"
+                ? "Places"
+                : modalDetails.type === "people"
+                ? "People"
+                : ""
+            }
             path={modalDetails.path}
           />
         </ul>
