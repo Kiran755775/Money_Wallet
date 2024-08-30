@@ -6,7 +6,7 @@ import TypesofCategories from "./assets/components/TypesofCategories";
 import Event from "./assets/components/Event";
 import Place from "./assets/components/Place";
 import Person from "./assets/components/Person";
-
+import Wallet from "./assets/components/Wallet";
 function App() {
   
 
@@ -18,6 +18,7 @@ function App() {
           <Route path="/search" element={<SearchTransaction/>}/>
           <Route path="/newtransaction" element={<Newtransaction/>}/>
           <Route path="/typesofCategories" element={<TypesofCategories/>}/>
+          <Route path="/wallet" element={<Wallet/>}/>
           <Route path="/event" element={<Event/>}/>
           <Route path="/place" element={<Place/>}/>
           <Route path="/person" element={<Person/>}/>

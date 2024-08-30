@@ -9,6 +9,8 @@ import { BiCategory } from "react-icons/bi";
 import { MdNoteAlt, MdFlag } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoMdPeople } from "react-icons/io";
+import { GoFileDirectoryFill } from "react-icons/go";
+import { IoMdCalendar } from "react-icons/io";
 
 // Modal Component
 const Modal = ({ isVisible, onClose, name, path }) => {
@@ -17,7 +19,7 @@ const Modal = ({ isVisible, onClose, name, path }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
       <div
-        className="bg-white w-[90vw] h-[40vh] p-4 rounded shadow-lg relative"
+        className="bg-white w-[80vw] h-[30vh] p-4 rounded shadow-lg relative"
         style={{ maxWidth: "90vw", maxHeight: "40vh" }}
       >
         <button
@@ -49,6 +51,29 @@ export default function Newtransaction() {
   const handleCloseModal = () => {
     setModalDetails({ type: null, path: "" });
   };
+  
+    const [descriptionValue,setDescriptionValue]= useState("");
+    localStorage.setItem("description",descriptionValue)
+    const [noteValue,setNoteValue]= useState("");
+    localStorage.setItem("note",noteValue)
+    const today = new Date();
+const year = today.getFullYear();
+const month = String(today.getMonth() + 1).padStart(2, '0'); 
+const day = String(today.getDate()).padStart(2, '0');
+
+const currentDate = `${year}-${month}-${day}`; 
+
+    const [dateValue,setDateValue]= useState(currentDate);
+    localStorage.setItem("dateValue",dateValue)
+    const now = new Date();
+const hours = String(now.getHours()).padStart(2, '0');
+const minutes = String(now.getMinutes()).padStart(2, '0');
+
+
+const currentTime = `${hours}:${minutes}`;
+    const [timeValue,setTimeValue]= useState(currentTime);
+    localStorage.setItem("timeValue",timeValue)
+
 
   return (
     <>
@@ -88,7 +113,8 @@ export default function Newtransaction() {
               type="text"
               placeholder="Description"
               className="border-b-2 border-gray-500 w-[88vw] focus:border-[#fc0377] placeholder-gray-500 hover:border-[#fc0377] transition-colors duration-300 outline-none ml-3"
-              style={{ caretColor: "#fc0377" }}
+              onChange={()=>setDescriptionValue(event.target.value)}
+              style={{ caretColor: "#fc0377" }} 
             />
           </li>
           <Link to="/typesofCategories">
@@ -96,26 +122,38 @@ export default function Newtransaction() {
               <BiCategory className="text-2xl" />
               <input
                 type="text"
-                placeholder="Category"
+                placeholder="Category"  value={localStorage.getItem("item1")}
                 className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
                 style={{ caretColor: "#fc0377" }}
               />
             </li>
           </Link>
+          <li className="flex items-center pl-6 pr-1 my-8 " >
+              <IoMdCalendar  className="text-2xl" />
+              <input
+                type="date"
+                value={localStorage.getItem("dateValue")}
+                onChange={()=>setDateValue(event.target.value)}
+                className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
+                style={{ caretColor: "#fc0377" }}
+              />
+              <input
+                type="time"
+                value={localStorage.getItem("timeValue")}
+               onChange={()=>setTimeValue(event.target.value)}
+                className="border-b-2 border-gray-500 w-[30vw] placeholder-gray-500 outline-none ml-3"
+                style={{ caretColor: "#fc0377" }}
+              />
+          </li>
           <li
             className="flex items-center pl-6 pr-1 my-8"
-            onFocus={() => setFocusedInput("note")}
-            onBlur={() => setFocusedInput(null)}
+            onClick={() => handleItemClick("wallet", "/wallet")}
           >
-            <MdNoteAlt
-              className={`text-2xl ${
-                focusedInput === "note" ? "text-[#fc0377]" : "auto"
-              }`}
-            />
+            <GoFileDirectoryFill className="text-2xl" />
             <input
               type="text"
-              placeholder="Note"
-              className="border-b-2 border-gray-500 w-[88vw] focus:border-[#fc0377] placeholder-gray-500 hover:border-[#fc0377] transition-colors duration-300 outline-none ml-3"
+              value="Kiran"
+              className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
               style={{ caretColor: "#fc0377" }}
             />
           </li>
@@ -132,7 +170,18 @@ export default function Newtransaction() {
               style={{ caretColor: "#fc0377" }}
             />
           </li>
-
+          <li
+            className="flex items-center pl-6 pr-1 my-8"
+            onClick={() => handleItemClick("people", "/person")}
+          >
+            <IoMdPeople className="text-2xl" />
+            <input
+              type="text"
+              placeholder="People"
+              className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
+              style={{ caretColor: "#fc0377" }}
+            />
+          </li>
           <li
             className="flex items-center pl-6 pr-1 my-8"
             onClick={() => handleItemClick("place", "/place")}
@@ -147,23 +196,14 @@ export default function Newtransaction() {
           </li>
 
           {/* New List Item for People */}
-          <li
-            className="flex items-center pl-6 pr-1 my-8"
-            onClick={() => handleItemClick("people", "/person")}
-          >
-            <IoMdPeople className="text-2xl" />
-            <input
-              type="text"
-              placeholder="People"
-              className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
-              style={{ caretColor: "#fc0377" }}
-            />
-          </li>
+          
 
           <Modal
             isVisible={modalDetails.type !== null}
             onClose={handleCloseModal}
             name={
+              modalDetails.type === "wallet"
+                ? "Wallets":
               modalDetails.type === "event"
                 ? "Events"
                 : modalDetails.type === "place"
@@ -174,7 +214,30 @@ export default function Newtransaction() {
             }
             path={modalDetails.path}
           />
+          <li
+            className="flex items-center pl-6 pr-1 mt-8 mb-4"
+            onFocus={() => setFocusedInput("note")}
+            onBlur={() => setFocusedInput(null)}
+          >
+            <MdNoteAlt
+              className={`text-2xl ${
+                focusedInput === "note" ? "text-[#fc0377]" : "auto"
+              }`}
+            />
+            <input
+              type="text"
+              placeholder="Note"
+              className="border-b-2 border-gray-500 w-[88vw] focus:border-[#fc0377] placeholder-gray-500 hover:border-[#fc0377] transition-colors duration-300 outline-none ml-3"
+              onChange={()=>setNoteValue(event.target.value)}
+              style={{ caretColor: "#fc0377" }}
+            />
+          </li>
         </ul>
+        <div className="flex flex-col">
+          <label className="ml-7"><input type="checkbox" className="mr-6 "/>Confirmed</label>
+          <label className="ml-7"><input type="checkbox" className="mr-6" />Show in total wallet</label>
+        </div>
+        
       </div>
     </>
   );
