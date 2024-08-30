@@ -15,10 +15,10 @@ export default function Home() {
 
   return (
     <div className="h-[100vh]">
-    <div className="h-[15vh] flex bg-[#5d138f] ] pt-2">
+    <div className="h-[15vh] flex bg-[#5d138f] ] pt-2 ">
       {/* Sidebar */}
       <div 
-        className={`fixed top-0 left-0 h-full bg-white   transition-all duration-300 ${isOpen ? 'w-80' : 'w-0'} overflow-hidden`} 
+        className={`fixed top-0 left-0 h-full bg-white z-40   transition-all duration-300 ${isOpen ? 'w-80' : 'w-0'} overflow-hidden`} 
         style={{ zIndex: 50 }}
       >
         <div className="flex flex-col h-full pt-16 pl-6">
@@ -42,7 +42,7 @@ export default function Home() {
 
       {/* Main content */}
       <div 
-        className={`flex-1   transition-all duration-300 ${isOpen ? 'pl-80' : 'pl-0'} bg-[#5d138f] `}
+        className={`flex-1   transition-all z-30  duration-300 ${isOpen ? 'pl-80' : 'pl-0'} bg-[#5d138f] `}
         style={{ zIndex: 0 }}
       >
         <div className="h-8 px-4 flex items-center ">
@@ -76,6 +76,7 @@ export default function Home() {
         </Link>
       </div>
     </div>
+    <p>{localStorage.getItem("personName")}</p>
     </div>
   );
 }

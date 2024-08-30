@@ -49,7 +49,7 @@ export default function TypesofCategories() {
           {
             selectedCategory.description
           }
-          <FaCirclePlus className=" absolute bottom-10 right-4 text-[#fc0377] text-6xl cursor-pointer"/>
+          <Link to="/subcategory"><FaCirclePlus className=" absolute bottom-10 right-4 text-[#fc0377] text-6xl cursor-pointer"/></Link>
         </div>
       </div>
     </>

@@ -7,6 +7,7 @@ import Event from "./assets/components/Event";
 import Place from "./assets/components/Place";
 import Person from "./assets/components/Person";
 import Wallet from "./assets/components/Wallet";
+import Subcategory from "./assets/components/Subcategory";
 function App() {
   
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/event" element={<Event/>}/>
           <Route path="/place" element={<Place/>}/>
           <Route path="/person" element={<Person/>}/>
+          <Route path="/subcategory" element={<Subcategory/>}/>
         </Routes>
       </Router>
     </>

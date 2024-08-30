@@ -90,7 +90,7 @@ const currentTime = `${hours}:${minutes}`;
             </div>
             <div className="flex items-center justify-around w-[20vw]">
               <MdAttachFile className="text-white text-2xl cursor-pointer" />
-              <IoCheckmarkSharp className="text-white text-2xl" />
+              <Link to="/"><IoCheckmarkSharp className="text-white text-2xl" /></Link>
             </div>
           </div>
           <div className="flex justify-between px-4 pt-3">
@@ -234,8 +234,8 @@ const currentTime = `${hours}:${minutes}`;
           </li>
         </ul>
         <div className="flex flex-col">
-          <label className="ml-7"><input type="checkbox" className="mr-6 "/>Confirmed</label>
-          <label className="ml-7"><input type="checkbox" className="mr-6" />Show in total wallet</label>
+          <label className="ml-7"><input type="checkbox" checked className="mr-6 "/>Confirmed</label>
+          <label className="ml-7"><input type="checkbox" checked className="mr-6" />Show in total wallet</label>
         </div>
         
       </div>

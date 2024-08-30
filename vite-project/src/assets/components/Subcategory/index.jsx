@@ -2,14 +2,12 @@ import { IoMdArrowBack } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { IoCheckmarkSharp } from "react-icons/io5";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
-import { MdNoteAlt } from "react-icons/md";
+import { BiCategory } from "react-icons/bi";
+
 import { useState } from "react";
-export default function Person() {
+export default function Subcategory() {
     const [focusedInput, setFocusedInput] = useState(null);
-    const [personName,setPersonName]= useState("")
-    localStorage.setItem("personName",personName)
-    const [personNote,setPersonNote]= useState("")
-    localStorage.setItem("personNote",personNote)
+
   return (
     <>
       <div className="h-[100vh] ">
@@ -20,12 +18,12 @@ export default function Person() {
                         <IoMdArrowBack className="text-white text-2xl" />
                     </Link>
                     <h1 className="text-white text-xl font-semibold">
-                        New person
+                        New category
                     </h1>
                 </div>
                 <div className="flex items-center justify-around w-[10vw]">
                 
-                    <Link to="/newtransaction"><IoCheckmarkSharp className="text-white text-2xl" /></Link>
+                    <IoCheckmarkSharp className="text-white text-2xl" />
                 </div>
             </div>
             
@@ -37,7 +35,7 @@ export default function Person() {
             />
             <input
               type="text"
-              placeholder="Name" onChange={()=>setPersonName(event.target.value)}
+              placeholder="Name"
               className="border-b-2 text-xl bg-transparent border-gray-500 w-[65vw] focus:border-[#fc0377] placeholder-gray-400  hover:border-[#fc0377] transition-colors duration-300 outline-none ml-3 "
               style={{ caretColor: "#fc0377" }}
             />
@@ -50,7 +48,7 @@ export default function Person() {
             onFocus={() => setFocusedInput("note")}
             onBlur={() => setFocusedInput(null)}
           >
-            <MdNoteAlt
+            <BiCategory
               className={`text-2xl ${
                 focusedInput === "note" ? "text-[#fc0377]" : "auto"
               }`}
@@ -58,11 +56,19 @@ export default function Person() {
             <input
               type="text"
               placeholder="Note"
-              onChange={()=>setPersonNote(event.target.value)}
               className="border-b-2 border-gray-500 w-[88vw] focus:border-[#fc0377] placeholder-gray-500 hover:border-[#fc0377] transition-colors duration-300 outline-none ml-3"
               style={{ caretColor: "#fc0377" }}
             />
           </li>
+          <div className="flex flex-col">
+            <label className="mx-7"><input type="radio" name="a"  />Income</label>
+            <label  className="mx-7"><input type="radio" name="a" checked/>Expense</label>
+          </div>
+          <label>
+            <input type="checkbox" checked  className="mx-7"/>Show this category inside the reports
+          </label>
+         
+          
       </div>
     </>
   );
