@@ -12,6 +12,139 @@ import { IoMdPeople } from "react-icons/io";
 import { GoFileDirectoryFill } from "react-icons/go";
 import { IoMdCalendar } from "react-icons/io";
 import { MdArrowBack } from "react-icons/md";
+import { FaCirclePlus } from "react-icons/fa6";
+
+
+const incomesList=[{
+    id:1,
+    name:"Interests"
+},
+{
+    id:2,
+    name:"Prize"
+},{
+    id:3,
+    name:"Salary"
+},
+{
+    id:4,
+    name:"Sale"
+},{
+    id:5,
+    name:"Tip"
+}
+]
+
+ function Incomes(){
+    const [item1,setItem1]=useState("");
+    localStorage.setItem("item1",item1)
+    return(
+        <>
+        <div>
+        {incomesList.map((eachItem) => (
+            
+          <li key={eachItem.id} className="flex items-center  ml-5 my-8 " onClick={()=>setItem1(eachItem.name)}>
+            <h1 className="bg-red-600 rounded-full h-12 w-12 text-center flex justify-center items-center text-white text-xl ">
+              |
+            </h1>
+            <p className="text-black font-semibold ml-5">{eachItem.name}</p>
+          </li>
+          
+        ))}
+        </div>
+        </>
+    )
+}
+
+const expensesList=[{
+    id:1,
+    name:"Car expenses"
+},
+{
+    id:2,
+    name:"Food and drinks"
+},{
+    id:3,
+    name:"Friends"
+},
+{
+    id:4,
+    name:"Hobby"
+},{
+    id:5,
+    name:"Technology"
+},
+{
+    id:6,
+    name:"Travel"
+}
+]
+function Expenses(){
+    const [item1,setItem1]=useState("");
+    localStorage.setItem("item1",item1)
+    return(
+        <>
+        <div>
+        {expensesList.map((eachItem) => (
+           
+          <li key={eachItem.id} className="flex items-center  ml-5 my-8 " onClick={()=>setItem1(eachItem.name)}>
+            <h1 className="bg-red-600 rounded-full h-12 w-12 text-center flex justify-center items-center text-white text-xl ">
+              |
+            </h1>
+            <p className="text-black font-semibold ml-5">{eachItem.name}</p>
+          </li>
+          
+        ))}
+        </div>
+        </>
+    )
+}
+const categoriesList = [
+  { id: 1, name: "INCOMES", description: <Incomes /> },
+  {
+    id: 2,
+    name: "EXPENSES",
+    description: <Expenses />,
+  },
+];
+ function TypesofCategories() {
+    const [selectId, setSelectId]= useState(2);
+    function handleCategoryClick(id){
+        setSelectId(id);
+        
+    }
+    const selectedCategory = categoriesList.find(
+        (category) => category.id === selectId
+      );
+      
+  return (
+    <>
+       <div className="h-[100vh] relative w-[100vw]">
+      <div className="bg-[#5d138f] h-[15vh]">
+        <div className="flex w-[60vw] justify-around items-center py-5">
+          <h1 className="text-white font-semibold text-xl">Pick a category</h1>
+        </div>
+        <ul className="flex justify-around">
+          {categoriesList.map((eachItem) => (
+            <li
+              key={eachItem.id}
+              className={`text-gray-400 cursor-pointer text-sm ${
+                eachItem.id === selectId ? 'text-white border-b-2 border-b-[#fc0377]' : ''
+              }`}
+              onClick={() => handleCategoryClick(eachItem.id)}
+            >
+              {eachItem.name}
+            </li>
+          ))}
+        </ul>
+        {selectedCategory && selectedCategory.description}
+        <FaCirclePlus className="absolute bottom-10 right-4 text-[#fc0377] text-6xl cursor-pointer" />
+      </div>
+    </div>
+    </>
+  );
+}
+
 const savedWallets = JSON.parse(localStorage.getItem("walletlist")) || [];
 const eventList = JSON.parse(localStorage.getItem("events")) || [];
 const peopleList = JSON.parse(localStorage.getItem("peopleList")) || [];
@@ -140,15 +273,15 @@ const Modal1 = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center ">
+    <div className="fixed inset-0 bg-black  flex justify-center items-center ">
       <div className="bg-white p-4 rounded shadow-lg h-[100vh] w-[100vw] relative">
-        <h2 className="text-xl mb-4">Modal Title</h2>
-        <p>This is the modal content.</p>
+       
         <button
           onClick={onClose}
           className="mt-4 px-4 py-2  text-white rounded"
         >
           <MdArrowBack className="text-white text-2xl top-1 absolute bg-black" />
+          <TypesofCategories/>
         </button>
       </div>
     </div>

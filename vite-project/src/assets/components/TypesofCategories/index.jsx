@@ -2,9 +2,10 @@ import { MdArrowBack } from "react-icons/md";
 
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
 
-import { Link } from "react-router-dom";
+
 const incomesList=[{
     id:1,
     name:"Interests"
