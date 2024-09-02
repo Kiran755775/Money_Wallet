@@ -11,17 +11,22 @@ import { FaLocationDot } from "react-icons/fa6";
 import { IoMdPeople } from "react-icons/io";
 import { GoFileDirectoryFill } from "react-icons/go";
 import { IoMdCalendar } from "react-icons/io";
-
+import { MdArrowBack } from "react-icons/md";
 const savedWallets = JSON.parse(localStorage.getItem("walletlist")) || [];
 const eventList = JSON.parse(localStorage.getItem("events")) || [];
 const peopleList = JSON.parse(localStorage.getItem("peopleList")) || [];
 const placeList = JSON.parse(localStorage.getItem("placesList")) || [];
-const Modal = ({ isVisible, onClose, name, path }) => {
+const Modal = ({ isVisible, onClose, name, path, onSelect }) => {
   if (!isVisible) return null;
+
+  const handleSelect = (item) => {
+    onSelect(item); 
+    onClose(); 
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
-      <div className="bg-white w-[80vw] h-[30vh] max-h-full  p-4 rounded shadow-lg relative">
+      <div className="bg-white w-[80vw] h-[30vh] max-h-full p-4 rounded shadow-lg relative">
         <button
           className="absolute bottom-4 right-20 text-[#fc0377] font-semibold"
           onClick={onClose}
@@ -35,26 +40,19 @@ const Modal = ({ isVisible, onClose, name, path }) => {
         </Link>
         <h2 className="text-xl font-bold">{name}</h2>
 
+      
         {name === "Wallets" && (
           <div>
-            <div className="flex justify-start items-center mt-4">
-              <p className="text-xl text-white bg-gray-800 h-7 w-7 rounded-full text-center">
-                K
-              </p>
-              <div className="flex flex-col justify-start ml-3">
-                <p className="text-sm">Kiran</p>
-                <p className="text-sm">$ 0.00</p>
-              </div>
-            </div>
             {savedWallets.length > 0 && (
               <ul>
                 {savedWallets.map((eachItem, index) => (
                   <li
                     key={index}
-                    className="flex justify-start items-center mt-4"
+                    className="flex justify-start items-center mt-4 cursor-pointer" 
+                    onClick={() => handleSelect(eachItem)} 
                   >
                     <p className="text-xl text-white bg-gray-800 h-7 w-7 rounded-full text-center">
-                      {eachItem.name[0]}{" "}
+                      {eachItem.name[0]}
                     </p>
                     <div className="flex flex-col justify-start ml-3">
                       <p className="text-sm">{eachItem.name}</p>
@@ -73,10 +71,11 @@ const Modal = ({ isVisible, onClose, name, path }) => {
                 {eventList.map((eachItem, index) => (
                   <li
                     key={index}
-                    className="flex justify-start items-center mt-4"
+                    className="flex justify-start items-center mt-4 cursor-pointer" 
+                    onClick={() => handleSelect(eachItem)} 
                   >
                     <p className="text-xl text-white bg-gray-800 h-7 w-7 rounded-full text-center">
-                      {eachItem.name[0]}{" "}
+                      {eachItem.name[0]}
                     </p>
                     <div className="flex flex-col justify-start ml-3">
                       <p className="text-sm">{eachItem.name}</p>
@@ -95,10 +94,11 @@ const Modal = ({ isVisible, onClose, name, path }) => {
                 {peopleList.map((eachItem, index) => (
                   <li
                     key={index}
-                    className="flex justify-start items-center mt-4"
+                    className="flex justify-start items-center mt-4 cursor-pointer" 
+                    onClick={() => handleSelect(eachItem)} 
                   >
                     <p className="text-xl text-white bg-gray-800 h-7 w-7 rounded-full text-center">
-                      {eachItem.name[0]}{" "}
+                      {eachItem.name[0]}
                     </p>
                     <div className="flex flex-col justify-start ml-3">
                       <p className="text-sm">{eachItem.name}</p>
@@ -116,14 +116,15 @@ const Modal = ({ isVisible, onClose, name, path }) => {
                 {placeList.map((eachItem, index) => (
                   <li
                     key={index}
-                    className="flex justify-start items-center mt-4"
+                    className="flex justify-start items-center mt-4 cursor-pointer" 
+                    onClick={() => handleSelect(eachItem)} 
                   >
                     <p className="text-xl text-white bg-gray-800 h-7 w-7 rounded-full text-center">
-                      {eachItem.name[0]}{" "}
+                      {eachItem.name[0]}
                     </p>
                     <div className="flex flex-col justify-start ml-3">
-                      <p className="text-sm text-black">{eachItem.name}</p>
-                      <p className="text-sm text-gray-500">{eachItem.address}</p>
+                      <p className="text-sm">{eachItem.name}</p>
+                      <p className="text-sm">{eachItem.address}</p>
                     </div>
                   </li>
                 ))}
@@ -135,6 +136,25 @@ const Modal = ({ isVisible, onClose, name, path }) => {
     </div>
   );
 };
+const Modal1 = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center ">
+      <div className="bg-white p-4 rounded shadow-lg h-[100vh] w-[100vw] relative">
+        <h2 className="text-xl mb-4">Modal Title</h2>
+        <p>This is the modal content.</p>
+        <button
+          onClick={onClose}
+          className="mt-4 px-4 py-2  text-white rounded"
+        >
+          <MdArrowBack className="text-white text-2xl top-1 absolute bg-black" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 
 export default function Newtransaction() {
   const [focusedInput, setFocusedInput] = useState(null);
@@ -169,7 +189,34 @@ export default function Newtransaction() {
   const currentTime = `${hours}:${minutes}`;
   const [timeValue, setTimeValue] = useState(currentTime);
   localStorage.setItem("timeValue", timeValue);
+  const [walletValue, setWalletValue] = useState("Kiran"); 
+  const [eventValue, setEventValue] = useState(""); 
+  const [peopleValue, setPeopleValue] = useState(""); 
+  const [placeValue, setPlaceValue] = useState(""); 
+  const handleSelect = (item) => {
+    switch (modalDetails.type) {
+      case "wallet":
+        setWalletValue(item.name);
+        break;
+      case "event":
+        setEventValue(item.name); 
+        break;
+      case "people":
+        setPeopleValue(item.name); 
+        break;
+      case "place":
+        setPlaceValue(item.name); 
+        break;
+      default:
+        break;
+    }
+  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  
   return (
     <>
       <div className="h-[100vh]">
@@ -214,18 +261,21 @@ export default function Newtransaction() {
               style={{ caretColor: "#fc0377" }}
             />
           </li>
-          <Link to="/typesofCategories">
-            <li className="flex items-center pl-6 pr-1 my-8">
-              <BiCategory className="text-2xl" />
-              <input
-                type="text"
-                placeholder="Category"
-                value={localStorage.getItem("item1")}
-                className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
-                style={{ caretColor: "#fc0377" }}
-              />
-            </li>
-          </Link>
+         
+          <div>
+      <li className="flex items-center pl-6 pr-1 my-8">
+        <BiCategory className="text-2xl" />
+        <input
+          type="text"
+          placeholder="Category"
+          value={localStorage.getItem("item1")}
+          className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
+          style={{ caretColor: "#fc0377" }}
+          onClick={openModal} // Open modal when input is clicked
+        />
+      </li>
+      <Modal1 isOpen={isModalOpen} onClose={closeModal} />
+    </div>
           <li className="flex items-center pl-6 pr-1 my-8">
             <IoMdCalendar className="text-2xl" />
             <input
@@ -250,7 +300,7 @@ export default function Newtransaction() {
             <GoFileDirectoryFill className="text-2xl" />
             <input
               type="text"
-              value="Kiran"
+              value={walletValue}
               className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
               style={{ caretColor: "#fc0377" }}
             />
@@ -264,6 +314,7 @@ export default function Newtransaction() {
             <input
               type="text"
               placeholder="Event"
+              value={eventValue}
               className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
               style={{ caretColor: "#fc0377" }}
             />
@@ -276,6 +327,7 @@ export default function Newtransaction() {
             <input
               type="text"
               placeholder="People"
+              value={peopleValue}
               className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
               style={{ caretColor: "#fc0377" }}
             />
@@ -308,6 +360,8 @@ export default function Newtransaction() {
                 : ""
             }
             path={modalDetails.path}
+            
+            onSelect={handleSelect}
           />
 
           <li
