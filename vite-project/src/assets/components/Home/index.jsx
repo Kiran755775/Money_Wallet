@@ -3,32 +3,46 @@ import { IoSearchSharp } from "react-icons/io5";
 import { BiCalendarEvent } from "react-icons/bi";
 import { FaCirclePlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MdLocalGroceryStore } from "react-icons/md";
 import { BiCategory } from "react-icons/bi";
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
+  const sidebarRef = useRef(null);  
 
   const openNav = () => setIsOpen(true);
   const closeNav = () => setIsOpen(false);
-  
+
+  useEffect(() => {
+   
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        closeNav();
+      }
+    };
+
+ 
+    document.addEventListener('mousedown', handleClickOutside);
+
+   
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const transactions = JSON.parse(localStorage.getItem("transactions"));
 
   return (
     <div className="h-[100vh] relative">
       
       <div
+        ref={sidebarRef}  
         className={`fixed top-0 left-0 h-full bg-white z-40 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} overflow-hidden`}
         style={{ width: '16rem' }} 
       >
         <div className="flex flex-col h-full pt-16 pl-6">
-          <button
-            className="text-2xl mb-6"
-            onClick={closeNav}
-            aria-label="Close navigation"
-          >
-            &times;
-          </button>
+         
           <Link to="#" className="flex items-center mb-4 text-gray-700 hover:text-gray-900">
             <MdLocalGroceryStore className="mr-2 text-2xl" />
             <span>Transactions</span>
@@ -72,7 +86,20 @@ export default function Home() {
           <FaCirclePlus className="absolute bottom-10 right-4 text-[#fc0377] text-6xl cursor-pointer" />
         </Link>
       </div>
-    
+      
+      <ul>
+        {transactions.map((eachItem) => (
+          <li key={eachItem.description} className="flex items-center p-3">
+            <h1 className="bg-pink-600 h-8 w-8 rounded-full flex items-center justify-center text-white text-lg">
+              {(eachItem.category)[0]}
+            </h1>
+            <div className="ml-3">
+              <h1 className="text-sm">{eachItem.category}</h1>
+              <p className="text-gray-600 text-xs">{eachItem.description}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
