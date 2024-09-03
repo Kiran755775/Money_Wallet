@@ -12,19 +12,19 @@ export default function Home() {
 
   const openNav = () => setIsOpen(true);
   const closeNav = () => setIsOpen(false);
+  
 
   return (
-    <div className="h-[100vh]">
-    <div className="h-[15vh] flex bg-[#5d138f] ] pt-2 ">
-      {/* Sidebar */}
-      <div 
-        className={`fixed top-0 left-0 h-full bg-white z-40   transition-all duration-300 ${isOpen ? 'w-80' : 'w-0'} overflow-hidden`} 
-        style={{ zIndex: 50 }}
+    <div className="h-[100vh] relative">
+      
+      <div
+        className={`fixed top-0 left-0 h-full bg-white z-40 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} overflow-hidden`}
+        style={{ width: '16rem' }} 
       >
         <div className="flex flex-col h-full pt-16 pl-6">
-          <button 
-            className="text-2xl mb-6" 
-            onClick={closeNav} 
+          <button
+            className="text-2xl mb-6"
+            onClick={closeNav}
             aria-label="Close navigation"
           >
             &times;
@@ -40,16 +40,13 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Main content */}
-      <div 
-        className={`flex-1   transition-all z-30  duration-300 ${isOpen ? 'pl-80' : 'pl-0'} bg-[#5d138f] `}
-        style={{ zIndex: 0 }}
-      >
-        <div className="h-8 px-4 flex items-center ">
+      
+      <div className="flex-1 bg-[#5d138f] transition-all duration-300 ml-0">
+        <div className="h-8 px-4 flex items-center">
           <div className="flex-1 flex items-center">
-            <span 
-              className="text-white text-2xl cursor-pointer" 
-              onClick={openNav} 
+            <span
+              className="text-white text-2xl cursor-pointer"
+              onClick={openNav}
               aria-label="Open navigation"
             >
               <FiMenu />
@@ -75,8 +72,8 @@ export default function Home() {
           <FaCirclePlus className="absolute bottom-10 right-4 text-[#fc0377] text-6xl cursor-pointer" />
         </Link>
       </div>
-    </div>
-    <p>{localStorage.getItem("personName")}</p>
+    
     </div>
   );
 }
+

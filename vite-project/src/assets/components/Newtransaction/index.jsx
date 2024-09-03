@@ -4,7 +4,7 @@ import { IoCheckmarkSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { LiaDollarSignSolid } from "react-icons/lia";
 import { RiMenu2Line } from "react-icons/ri";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BiCategory } from "react-icons/bi";
 import { MdNoteAlt, MdFlag } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
@@ -119,28 +119,32 @@ const categoriesList = [
       
   return (
     <>
-       <div className="h-[100vh] relative w-[100vw]">
-      <div className="bg-[#5d138f] h-[15vh]">
-        <div className="flex w-[60vw] justify-around items-center py-5">
-          <h1 className="text-white font-semibold text-xl">Pick a category</h1>
+      <div className="h-[100vh] relative">
+        <div className="bg-[#5d138f] h-[15vh]">
+          <div className="flex w-[60vw] justify-around items-center py-5">
+            
+            <h1 className="text-white font-semibold text-xl">
+              Pick a category
+            </h1>
+          </div>
+          <ul className="flex justify-around">
+            {categoriesList.map((eachItem) => (
+              <li className={`text-gray-400 cursor-pointer text-sm ${
+                eachItem.id === selectId ? 'text-white border-b-2 border-b-[#fc0377] ' : ''
+              }
+                `} key={eachItem.id} onClick={()=>handleCategoryClick(eachItem.id)}>
+                {eachItem.name}
+                
+              </li>
+              
+            ))}
+          </ul>
+          {
+            selectedCategory.description
+          }
+          <FaCirclePlus className=" absolute bottom-10 right-4 text-[#fc0377] text-6xl cursor-pointer"/>
         </div>
-        <ul className="flex justify-around">
-          {categoriesList.map((eachItem) => (
-            <li
-              key={eachItem.id}
-              className={`text-gray-400 cursor-pointer text-sm ${
-                eachItem.id === selectId ? 'text-white border-b-2 border-b-[#fc0377]' : ''
-              }`}
-              onClick={() => handleCategoryClick(eachItem.id)}
-            >
-              {eachItem.name}
-            </li>
-          ))}
-        </ul>
-        {selectedCategory && selectedCategory.description}
-        <FaCirclePlus className="absolute bottom-10 right-4 text-[#fc0377] text-6xl cursor-pointer" />
       </div>
-    </div>
     </>
   );
 }
@@ -273,18 +277,23 @@ const Modal1 = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black  flex justify-center items-center ">
-      <div className="bg-white p-4 rounded shadow-lg h-[100vh] w-[100vw] relative">
-       
+    <div className="fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center">
+    <div className="bg-white  rounded shadow-lg h-[100vh] w-[100vw] relative">
+      {/* Back button */}
+      
+
+      {/* Types of Categories Component */}
+      <div className="h-full overflow-hidden">
+        <TypesofCategories />
         <button
-          onClick={onClose}
-          className="mt-4 px-4 py-2  text-white rounded"
-        >
-          <MdArrowBack className="text-white text-2xl top-1 absolute bg-black" />
-          <TypesofCategories/>
-        </button>
+        onClick={onClose}
+        className="absolute top-4 left-0 px-4 py-2  text-white rounded"
+      >
+        <MdArrowBack className="text-white text-2xl" />
+      </button>
       </div>
     </div>
+  </div>
   );
 };
 
@@ -292,6 +301,34 @@ const Modal1 = ({ isOpen, onClose }) => {
 export default function Newtransaction() {
   const [focusedInput, setFocusedInput] = useState(null);
   const [modalDetails, setModalDetails] = useState({ type: null, path: "" });
+  const [descriptionValue, setDescriptionValue] = useState(localStorage.getItem("description") || "");
+  const [noteValue, setNoteValue] = useState(localStorage.getItem("note") || "");
+  const [dateValue, setDateValue] = useState(localStorage.getItem("dateValue") || getCurrentDate());
+  const [timeValue, setTimeValue] = useState(localStorage.getItem("timeValue") || getCurrentTime());
+  const [walletValue, setWalletValue] = useState("Kiran");
+  const [eventValue, setEventValue] = useState("");
+  const [peopleValue, setPeopleValue] = useState("");
+  const [placeValue, setPlaceValue] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [transactionList, setTransactionList] = useState(
+    JSON.parse(localStorage.getItem("transactions")) || []
+  );
+
+  useEffect(() => {
+    localStorage.setItem("description", descriptionValue);
+  }, [descriptionValue]);
+
+  useEffect(() => {
+    localStorage.setItem("note", noteValue);
+  }, [noteValue]);
+
+  useEffect(() => {
+    localStorage.setItem("dateValue", dateValue);
+  }, [dateValue]);
+
+  useEffect(() => {
+    localStorage.setItem("timeValue", timeValue);
+  }, [timeValue]);
 
   const handleItemClick = (type, path) => {
     setModalDetails({ type, path });
@@ -301,55 +338,66 @@ export default function Newtransaction() {
     setModalDetails({ type: null, path: "" });
   };
 
-  const [descriptionValue, setDescriptionValue] = useState("");
-  localStorage.setItem("description", descriptionValue);
-  const [noteValue, setNoteValue] = useState("");
-  localStorage.setItem("note", noteValue);
-
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const day = String(today.getDate()).padStart(2, "0");
-
-  const currentDate = `${year}-${month}-${day}`;
-  const [dateValue, setDateValue] = useState(currentDate);
-  localStorage.setItem("dateValue", dateValue);
-
-  const now = new Date();
-  const hours = String(now.getHours()).padStart(2, "0");
-  const minutes = String(now.getMinutes()).padStart(2, "0");
-
-  const currentTime = `${hours}:${minutes}`;
-  const [timeValue, setTimeValue] = useState(currentTime);
-  localStorage.setItem("timeValue", timeValue);
-  const [walletValue, setWalletValue] = useState("Kiran"); 
-  const [eventValue, setEventValue] = useState(""); 
-  const [peopleValue, setPeopleValue] = useState(""); 
-  const [placeValue, setPlaceValue] = useState(""); 
   const handleSelect = (item) => {
     switch (modalDetails.type) {
       case "wallet":
         setWalletValue(item.name);
         break;
       case "event":
-        setEventValue(item.name); 
+        setEventValue(item.name);
         break;
       case "people":
-        setPeopleValue(item.name); 
+        setPeopleValue(item.name);
         break;
       case "place":
-        setPlaceValue(item.name); 
+        setPlaceValue(item.name);
         break;
       default:
         break;
     }
   };
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
+
+  const handleSaveTransaction = () => {
+    const newTransaction = {
+      description: descriptionValue,
+      category: localStorage.getItem("item1") || "",
+      date: dateValue,
+      time: timeValue,
+      wallet: walletValue,
+      event: eventValue,
+      people: peopleValue,
+      place: placeValue,
+      note: noteValue,
+      isConfirmed: true,
+      isShown: true
+    };
+
+    const updatedTransactionList = [...transactionList, newTransaction];
+    setTransactionList(updatedTransactionList);
+    localStorage.setItem("transactions", JSON.stringify(updatedTransactionList));
+    setDescriptionValue("")
+    setNoteValue("")
+    
+  };
+
   return (
     <>
       <div className="h-[100vh]">
@@ -365,9 +413,10 @@ export default function Newtransaction() {
             </div>
             <div className="flex items-center justify-around w-[20vw]">
               <MdAttachFile className="text-white text-2xl cursor-pointer" />
-              <Link to="/">
-                <IoCheckmarkSharp className="text-white text-2xl" />
-              </Link>
+              <IoCheckmarkSharp
+                className="text-white text-2xl cursor-pointer"
+                onClick={handleSaveTransaction}
+              />
             </div>
           </div>
           <div className="flex justify-between px-4 pt-3">
@@ -389,38 +438,40 @@ export default function Newtransaction() {
             <input
               type="text"
               placeholder="Description"
+              value={descriptionValue}
               className="border-b-2 border-gray-500 w-[88vw] focus:border-[#fc0377] placeholder-gray-500 hover:border-[#fc0377] transition-colors duration-300 outline-none ml-3"
               onChange={(e) => setDescriptionValue(e.target.value)}
               style={{ caretColor: "#fc0377" }}
             />
           </li>
-         
+
           <div>
-      <li className="flex items-center pl-6 pr-1 my-8">
-        <BiCategory className="text-2xl" />
-        <input
-          type="text"
-          placeholder="Category"
-          value={localStorage.getItem("item1")}
-          className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
-          style={{ caretColor: "#fc0377" }}
-          onClick={openModal} // Open modal when input is clicked
-        />
-      </li>
-      <Modal1 isOpen={isModalOpen} onClose={closeModal} />
-    </div>
+            <li className="flex items-center pl-6 pr-1 my-8">
+              <BiCategory className="text-2xl" />
+              <input
+                type="text"
+                placeholder="Category"
+                value={localStorage.getItem("item1") || ""}
+                className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
+                style={{ caretColor: "#fc0377" }}
+                onClick={openModal}
+              />
+            </li>
+            <Modal1 isOpen={isModalOpen} onClose={closeModal} />
+          </div>
+
           <li className="flex items-center pl-6 pr-1 my-8">
             <IoMdCalendar className="text-2xl" />
             <input
               type="date"
-              value={localStorage.getItem("dateValue")}
+              value={dateValue}
               onChange={(e) => setDateValue(e.target.value)}
               className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
               style={{ caretColor: "#fc0377" }}
             />
             <input
               type="time"
-              value={localStorage.getItem("timeValue")}
+              value={timeValue}
               onChange={(e) => setTimeValue(e.target.value)}
               className="border-b-2 border-gray-500 w-[30vw] placeholder-gray-500 outline-none ml-3"
               style={{ caretColor: "#fc0377" }}
@@ -473,6 +524,7 @@ export default function Newtransaction() {
             <input
               type="text"
               placeholder="Place"
+              value={placeValue}
               className="border-b-2 border-gray-500 w-[88vw] placeholder-gray-500 outline-none ml-3"
               style={{ caretColor: "#fc0377" }}
             />
@@ -493,7 +545,6 @@ export default function Newtransaction() {
                 : ""
             }
             path={modalDetails.path}
-            
             onSelect={handleSelect}
           />
 
@@ -510,6 +561,7 @@ export default function Newtransaction() {
             <input
               type="text"
               placeholder="Note"
+              value={noteValue}
               className="border-b-2 border-gray-500 w-[88vw] focus:border-[#fc0377] placeholder-gray-500 hover:border-[#fc0377] transition-colors duration-300 outline-none ml-3"
               onChange={(e) => setNoteValue(e.target.value)}
               style={{ caretColor: "#fc0377" }}
